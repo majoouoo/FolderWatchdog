@@ -80,6 +80,7 @@
             notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
             notifyIcon1.Text = "Folder Watchdog";
             notifyIcon1.Visible = true;
+            notifyIcon1.MouseClick += IconMouseClick;
             // 
             // contextMenuStrip1
             // 
@@ -95,18 +96,21 @@
             enabledToolStripMenuItem.Name = "enabledToolStripMenuItem";
             enabledToolStripMenuItem.Size = new Size(116, 22);
             enabledToolStripMenuItem.Text = "Enabled";
+            enabledToolStripMenuItem.CheckedChanged += ToggleEnabledAndSave;
             // 
             // settingsToolStripMenuItem
             // 
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             settingsToolStripMenuItem.Size = new Size(116, 22);
             settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Click += ShowMainWindow;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.Size = new Size(116, 22);
             exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += ExitApplication;
             // 
             // tableLayoutPanel1
             // 
@@ -163,7 +167,7 @@
             // 
             enabledCheckBox.AutoSize = true;
             enabledCheckBox.Location = new Point(3, 3);
-            enabledCheckBox.Name = "checkBox9";
+            enabledCheckBox.Name = "enabledCheckBox";
             enabledCheckBox.Size = new Size(68, 19);
             enabledCheckBox.TabIndex = 0;
             enabledCheckBox.Text = "Enabled";
@@ -173,7 +177,7 @@
             // 
             watchFilesCheckBox.AutoSize = true;
             watchFilesCheckBox.Location = new Point(3, 28);
-            watchFilesCheckBox.Name = "checkBox10";
+            watchFilesCheckBox.Name = "watchFilesCheckBox";
             watchFilesCheckBox.Size = new Size(84, 19);
             watchFilesCheckBox.TabIndex = 4;
             watchFilesCheckBox.Text = "Watch files";
@@ -183,7 +187,7 @@
             // 
             watchSubdirectoriesCheckBox.AutoSize = true;
             watchSubdirectoriesCheckBox.Location = new Point(3, 53);
-            watchSubdirectoriesCheckBox.Name = "checkBox11";
+            watchSubdirectoriesCheckBox.Name = "watchSubdirectoriesCheckBox";
             watchSubdirectoriesCheckBox.Size = new Size(137, 19);
             watchSubdirectoriesCheckBox.TabIndex = 5;
             watchSubdirectoriesCheckBox.Text = "Watch subdirectories";
@@ -204,7 +208,7 @@
             // 
             directoryLabel.AutoSize = true;
             directoryLabel.Location = new Point(3, 0);
-            directoryLabel.Name = "label1";
+            directoryLabel.Name = "directoryLabel";
             directoryLabel.Size = new Size(107, 15);
             directoryLabel.TabIndex = 1;
             directoryLabel.Text = "Directory to watch:";
@@ -212,24 +216,25 @@
             // directoryTextBox
             // 
             directoryTextBox.Location = new Point(3, 18);
-            directoryTextBox.Name = "textBox1";
+            directoryTextBox.Name = "directoryTextBox";
             directoryTextBox.Size = new Size(389, 23);
             directoryTextBox.TabIndex = 2;
             // 
             // browseButton
             // 
             browseButton.Location = new Point(3, 47);
-            browseButton.Name = "button3";
+            browseButton.Name = "browseButton";
             browseButton.Size = new Size(75, 23);
             browseButton.TabIndex = 3;
             browseButton.Text = "Browse...";
             browseButton.UseVisualStyleBackColor = true;
+            browseButton.Click += BrowseDirectories;
             // 
             // filtersGroupBox
             // 
             filtersGroupBox.Controls.Add(tableLayoutPanel2);
             filtersGroupBox.Location = new Point(3, 153);
-            filtersGroupBox.Name = "groupBox2";
+            filtersGroupBox.Name = "filtersGroupBox";
             filtersGroupBox.Size = new Size(554, 147);
             filtersGroupBox.TabIndex = 1;
             filtersGroupBox.TabStop = false;
@@ -265,41 +270,46 @@
             // 
             fileNamesFilterCheckBox.AutoSize = true;
             fileNamesFilterCheckBox.Location = new Point(3, 3);
-            fileNamesFilterCheckBox.Name = "checkBox1";
+            fileNamesFilterCheckBox.Name = "fileNamesFilterCheckBox";
             fileNamesFilterCheckBox.Size = new Size(82, 19);
             fileNamesFilterCheckBox.TabIndex = 0;
+            fileNamesFilterCheckBox.Tag = "";
             fileNamesFilterCheckBox.Text = "File names";
             fileNamesFilterCheckBox.UseVisualStyleBackColor = true;
+            fileNamesFilterCheckBox.CheckedChanged += ToggleFilter;
             // 
             // directoryNamesFilterCheckBox
             // 
             directoryNamesFilterCheckBox.AutoSize = true;
             directoryNamesFilterCheckBox.Location = new Point(3, 28);
-            directoryNamesFilterCheckBox.Name = "checkBox2";
+            directoryNamesFilterCheckBox.Name = "directoryNamesFilterCheckBox";
             directoryNamesFilterCheckBox.Size = new Size(112, 19);
             directoryNamesFilterCheckBox.TabIndex = 1;
             directoryNamesFilterCheckBox.Text = "Directory names";
             directoryNamesFilterCheckBox.UseVisualStyleBackColor = true;
+            directoryNamesFilterCheckBox.CheckedChanged += ToggleFilter;
             // 
             // attributesFilterCheckBox
             // 
             attributesFilterCheckBox.AutoSize = true;
             attributesFilterCheckBox.Location = new Point(3, 53);
-            attributesFilterCheckBox.Name = "checkBox3";
+            attributesFilterCheckBox.Name = "attributesFilterCheckBox";
             attributesFilterCheckBox.Size = new Size(78, 19);
             attributesFilterCheckBox.TabIndex = 2;
             attributesFilterCheckBox.Text = "Attributes";
             attributesFilterCheckBox.UseVisualStyleBackColor = true;
+            attributesFilterCheckBox.CheckedChanged += ToggleFilter;
             // 
             // sizeFilterCheckBox
             // 
             sizeFilterCheckBox.AutoSize = true;
             sizeFilterCheckBox.Location = new Point(3, 78);
-            sizeFilterCheckBox.Name = "checkBox4";
+            sizeFilterCheckBox.Name = "sizeFilterCheckBox";
             sizeFilterCheckBox.Size = new Size(46, 19);
             sizeFilterCheckBox.TabIndex = 3;
             sizeFilterCheckBox.Text = "Size";
             sizeFilterCheckBox.UseVisualStyleBackColor = true;
+            sizeFilterCheckBox.CheckedChanged += ToggleFilter;
             // 
             // flowLayoutPanel3
             // 
@@ -317,41 +327,45 @@
             // 
             writeFilterCheckBox.AutoSize = true;
             writeFilterCheckBox.Location = new Point(3, 3);
-            writeFilterCheckBox.Name = "checkBox5";
+            writeFilterCheckBox.Name = "writeFilterCheckBox";
             writeFilterCheckBox.Size = new Size(54, 19);
             writeFilterCheckBox.TabIndex = 0;
             writeFilterCheckBox.Text = "Write";
             writeFilterCheckBox.UseVisualStyleBackColor = true;
+            writeFilterCheckBox.CheckedChanged += ToggleFilter;
             // 
             // accessFilterCheckBox
             // 
             accessFilterCheckBox.AutoSize = true;
             accessFilterCheckBox.Location = new Point(3, 28);
-            accessFilterCheckBox.Name = "checkBox6";
+            accessFilterCheckBox.Name = "accessFilterCheckBox";
             accessFilterCheckBox.Size = new Size(62, 19);
             accessFilterCheckBox.TabIndex = 1;
             accessFilterCheckBox.Text = "Access";
             accessFilterCheckBox.UseVisualStyleBackColor = true;
+            accessFilterCheckBox.CheckedChanged += ToggleFilter;
             // 
             // creationFilterCheckBox
             // 
             creationFilterCheckBox.AutoSize = true;
             creationFilterCheckBox.Location = new Point(3, 53);
-            creationFilterCheckBox.Name = "checkBox7";
+            creationFilterCheckBox.Name = "creationFilterCheckBox";
             creationFilterCheckBox.Size = new Size(71, 19);
             creationFilterCheckBox.TabIndex = 2;
             creationFilterCheckBox.Text = "Creation";
             creationFilterCheckBox.UseVisualStyleBackColor = true;
+            creationFilterCheckBox.CheckedChanged += ToggleFilter;
             // 
             // securityFilterCheckBox
             // 
             securityFilterCheckBox.AutoSize = true;
             securityFilterCheckBox.Location = new Point(3, 78);
-            securityFilterCheckBox.Name = "checkBox8";
+            securityFilterCheckBox.Name = "securityFilterCheckBox";
             securityFilterCheckBox.Size = new Size(68, 19);
             securityFilterCheckBox.TabIndex = 3;
             securityFilterCheckBox.Text = "Security";
             securityFilterCheckBox.UseVisualStyleBackColor = true;
+            securityFilterCheckBox.CheckedChanged += ToggleFilter;
             // 
             // flowLayoutPanel1
             // 
@@ -366,20 +380,22 @@
             // saveButton
             // 
             saveButton.Location = new Point(476, 3);
-            saveButton.Name = "button1";
+            saveButton.Name = "saveButton";
             saveButton.Size = new Size(75, 23);
             saveButton.TabIndex = 0;
             saveButton.Text = "Save";
             saveButton.UseVisualStyleBackColor = true;
+            saveButton.Click += SaveSettings;
             // 
             // cancelButton
             // 
             cancelButton.Location = new Point(395, 3);
-            cancelButton.Name = "button2";
+            cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(75, 23);
             cancelButton.TabIndex = 1;
             cancelButton.Text = "Cancel";
             cancelButton.UseVisualStyleBackColor = true;
+            cancelButton.Click += CloseSettings;
             // 
             // Form1
             // 
@@ -389,6 +405,7 @@
             Controls.Add(tableLayoutPanel1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "Form1";
             Text = "Settings";
             contextMenuStrip1.ResumeLayout(false);
