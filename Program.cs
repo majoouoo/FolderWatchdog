@@ -1,3 +1,6 @@
+using FolderWatchdog.Properties;
+using System.Diagnostics;
+
 namespace FolderWatchdog
 {
     internal static class Program
@@ -18,6 +21,8 @@ namespace FolderWatchdog
             form1.ShowInTaskbar = false;
             Application.Run(form1);
             Application.Run(new Form1());
+
+            Properties.Settings.Default.Reset();
         }
     }
 }

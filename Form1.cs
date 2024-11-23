@@ -14,15 +14,16 @@ namespace FolderWatchdog
 
             enabledToolStripMenuItem.Checked = Properties.Settings.Default.Enabled;
             enabledCheckBox.Checked = Properties.Settings.Default.Enabled;
-            watchFilesCheckBox.Checked = Properties.Settings.Default.WatchFiles;
             watchSubdirectoriesCheckBox.Checked = Properties.Settings.Default.WatchSubdirectories;
 
-            directoryTextBox.Text = Properties.Settings.Default.Directory;
+            string userProfilePath = Environment.ExpandEnvironmentVariables("%userprofile%");
+            directoryTextBox.Text = Properties.Settings.Default.Directory == "" ? Path.Combine(userProfilePath, "Documents") : Properties.Settings.Default.Directory;
+            Properties.Settings.Default.Directory = Properties.Settings.Default.Directory == "" ? Path.Combine(userProfilePath, "Documents") : Properties.Settings.Default.Directory;
 
             void SetFilterCheckBox(CheckBox checkBox)
             {
                 checkBox.CheckedChanged -= new EventHandler(ToggleFilter);
-                checkBox.Checked = Properties.Settings.Default.Filters.Contains(checkBox.Name);
+                checkBox.Checked = Properties.Settings.Default.Filters.Contains(checkBox.Tag as string);
                 checkBox.CheckedChanged += new EventHandler(ToggleFilter);
             }
 
@@ -58,6 +59,7 @@ namespace FolderWatchdog
             this.Show();
             this.WindowState = FormWindowState.Normal;
             this.ShowInTaskbar = true;
+            enabledCheckBox.Checked = Properties.Settings.Default.Enabled;
         }
 
         private void IconMouseClick(object sender, MouseEventArgs e)
@@ -77,7 +79,7 @@ namespace FolderWatchdog
             }
             else
             {
-                Watchdog.Stop();
+                Watchdog.watcher.EnableRaisingEvents = false;
             }
             Properties.Settings.Default.Save();
         }
@@ -111,7 +113,7 @@ namespace FolderWatchdog
         {
             filtersToToggle.ForEach(checkBox =>
             {
-                string filter = checkBox.Name;
+                string? filter = checkBox.Tag as string;
                 if (Properties.Settings.Default.Filters.Contains(filter))
                 {
                     Properties.Settings.Default.Filters.Remove(filter);
@@ -123,15 +125,22 @@ namespace FolderWatchdog
             });
             filtersToToggle.Clear();
 
+            Properties.Settings.Default.WatchSubdirectories = watchSubdirectoriesCheckBox.Checked;
+
+            string userProfilePath = Environment.ExpandEnvironmentVariables("%userprofile%");
+            Properties.Settings.Default.Directory = directoryTextBox.Text == "" ? Properties.Settings.Default.Directory : directoryTextBox.Text;
+            directoryTextBox.Text = Properties.Settings.Default.Directory;
+
+            Watchdog.watcher.Path = Properties.Settings.Default.Directory;
+            Watchdog.watcher.IncludeSubdirectories = Properties.Settings.Default.WatchSubdirectories;
+
             if (enabledCheckBox.Checked && (enabledToolStripMenuItem.Checked == enabledCheckBox.Checked))
             {
                 Watchdog.Start();
             }
+
             enabledToolStripMenuItem.Checked = enabledCheckBox.Checked;
             Properties.Settings.Default.Enabled = enabledToolStripMenuItem.Checked;
-            Properties.Settings.Default.WatchFiles = watchFilesCheckBox.Checked;
-            Properties.Settings.Default.WatchSubdirectories = watchSubdirectoriesCheckBox.Checked;
-            Properties.Settings.Default.Directory = directoryTextBox.Text;
 
             Properties.Settings.Default.Save();
             this.Hide();
@@ -150,7 +159,6 @@ namespace FolderWatchdog
             filtersToToggle.Clear();
 
             enabledCheckBox.Checked = Properties.Settings.Default.Enabled;
-            watchFilesCheckBox.Checked = Properties.Settings.Default.WatchFiles;
             watchSubdirectoriesCheckBox.Checked = Properties.Settings.Default.WatchSubdirectories;
             directoryTextBox.Text = Properties.Settings.Default.Directory;
 

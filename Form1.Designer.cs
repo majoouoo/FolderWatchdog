@@ -40,7 +40,6 @@
             tableLayoutPanel3 = new TableLayoutPanel();
             flowLayoutPanel4 = new FlowLayoutPanel();
             enabledCheckBox = new CheckBox();
-            watchFilesCheckBox = new CheckBox();
             watchSubdirectoriesCheckBox = new CheckBox();
             flowLayoutPanel5 = new FlowLayoutPanel();
             directoryLabel = new Label();
@@ -155,7 +154,6 @@
             // flowLayoutPanel4
             // 
             flowLayoutPanel4.Controls.Add(enabledCheckBox);
-            flowLayoutPanel4.Controls.Add(watchFilesCheckBox);
             flowLayoutPanel4.Controls.Add(watchSubdirectoriesCheckBox);
             flowLayoutPanel4.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel4.Location = new Point(3, 3);
@@ -173,20 +171,10 @@
             enabledCheckBox.Text = "Enabled";
             enabledCheckBox.UseVisualStyleBackColor = true;
             // 
-            // watchFilesCheckBox
-            // 
-            watchFilesCheckBox.AutoSize = true;
-            watchFilesCheckBox.Location = new Point(3, 28);
-            watchFilesCheckBox.Name = "watchFilesCheckBox";
-            watchFilesCheckBox.Size = new Size(84, 19);
-            watchFilesCheckBox.TabIndex = 4;
-            watchFilesCheckBox.Text = "Watch files";
-            watchFilesCheckBox.UseVisualStyleBackColor = true;
-            // 
             // watchSubdirectoriesCheckBox
             // 
             watchSubdirectoriesCheckBox.AutoSize = true;
-            watchSubdirectoriesCheckBox.Location = new Point(3, 53);
+            watchSubdirectoriesCheckBox.Location = new Point(3, 28);
             watchSubdirectoriesCheckBox.Name = "watchSubdirectoriesCheckBox";
             watchSubdirectoriesCheckBox.Size = new Size(137, 19);
             watchSubdirectoriesCheckBox.TabIndex = 5;
@@ -273,7 +261,7 @@
             fileNamesFilterCheckBox.Name = "fileNamesFilterCheckBox";
             fileNamesFilterCheckBox.Size = new Size(82, 19);
             fileNamesFilterCheckBox.TabIndex = 0;
-            fileNamesFilterCheckBox.Tag = "";
+            fileNamesFilterCheckBox.Tag = "FileName";
             fileNamesFilterCheckBox.Text = "File names";
             fileNamesFilterCheckBox.UseVisualStyleBackColor = true;
             fileNamesFilterCheckBox.CheckedChanged += ToggleFilter;
@@ -285,6 +273,7 @@
             directoryNamesFilterCheckBox.Name = "directoryNamesFilterCheckBox";
             directoryNamesFilterCheckBox.Size = new Size(112, 19);
             directoryNamesFilterCheckBox.TabIndex = 1;
+            directoryNamesFilterCheckBox.Tag = "DirectoryName";
             directoryNamesFilterCheckBox.Text = "Directory names";
             directoryNamesFilterCheckBox.UseVisualStyleBackColor = true;
             directoryNamesFilterCheckBox.CheckedChanged += ToggleFilter;
@@ -296,6 +285,7 @@
             attributesFilterCheckBox.Name = "attributesFilterCheckBox";
             attributesFilterCheckBox.Size = new Size(78, 19);
             attributesFilterCheckBox.TabIndex = 2;
+            attributesFilterCheckBox.Tag = "Attributes";
             attributesFilterCheckBox.Text = "Attributes";
             attributesFilterCheckBox.UseVisualStyleBackColor = true;
             attributesFilterCheckBox.CheckedChanged += ToggleFilter;
@@ -307,6 +297,7 @@
             sizeFilterCheckBox.Name = "sizeFilterCheckBox";
             sizeFilterCheckBox.Size = new Size(46, 19);
             sizeFilterCheckBox.TabIndex = 3;
+            sizeFilterCheckBox.Tag = "Size";
             sizeFilterCheckBox.Text = "Size";
             sizeFilterCheckBox.UseVisualStyleBackColor = true;
             sizeFilterCheckBox.CheckedChanged += ToggleFilter;
@@ -330,6 +321,7 @@
             writeFilterCheckBox.Name = "writeFilterCheckBox";
             writeFilterCheckBox.Size = new Size(54, 19);
             writeFilterCheckBox.TabIndex = 0;
+            writeFilterCheckBox.Tag = "LastWrite";
             writeFilterCheckBox.Text = "Write";
             writeFilterCheckBox.UseVisualStyleBackColor = true;
             writeFilterCheckBox.CheckedChanged += ToggleFilter;
@@ -341,6 +333,7 @@
             accessFilterCheckBox.Name = "accessFilterCheckBox";
             accessFilterCheckBox.Size = new Size(62, 19);
             accessFilterCheckBox.TabIndex = 1;
+            accessFilterCheckBox.Tag = "LastAccess";
             accessFilterCheckBox.Text = "Access";
             accessFilterCheckBox.UseVisualStyleBackColor = true;
             accessFilterCheckBox.CheckedChanged += ToggleFilter;
@@ -352,6 +345,7 @@
             creationFilterCheckBox.Name = "creationFilterCheckBox";
             creationFilterCheckBox.Size = new Size(71, 19);
             creationFilterCheckBox.TabIndex = 2;
+            creationFilterCheckBox.Tag = "CreationTime";
             creationFilterCheckBox.Text = "Creation";
             creationFilterCheckBox.UseVisualStyleBackColor = true;
             creationFilterCheckBox.CheckedChanged += ToggleFilter;
@@ -363,6 +357,7 @@
             securityFilterCheckBox.Name = "securityFilterCheckBox";
             securityFilterCheckBox.Size = new Size(68, 19);
             securityFilterCheckBox.TabIndex = 3;
+            securityFilterCheckBox.Tag = "Security";
             securityFilterCheckBox.Text = "Security";
             securityFilterCheckBox.UseVisualStyleBackColor = true;
             securityFilterCheckBox.CheckedChanged += ToggleFilter;
@@ -448,7 +443,6 @@
         private CheckBox sizeFilterCheckBox;
         private FlowLayoutPanel flowLayoutPanel3;
         private CheckBox enabledCheckBox;
-        private CheckBox watchFilesCheckBox;
         private CheckBox watchSubdirectoriesCheckBox;
         private Label directoryLabel;
         private TextBox directoryTextBox;
