@@ -12,6 +12,13 @@ namespace FolderWatchdog
     {
         static string userProfilePath = Environment.ExpandEnvironmentVariables("%userprofile%");
         public static FileSystemWatcher watcher = new FileSystemWatcher(Properties.Settings.Default.Directory == "" ? Path.Combine(userProfilePath, "Documents") : Properties.Settings.Default.Directory);
+        public static void Initialize()
+        {
+            watcher.Changed += OnChanged;
+            watcher.Created += OnCreated;
+            watcher.Deleted += OnDeleted;
+            watcher.Renamed += OnRenamed;
+        }
 
         public static void UpdateFilters()
         {
@@ -37,6 +44,39 @@ namespace FolderWatchdog
             new ToastContentBuilder()
                 .AddText("Watchdog started")
                 .AddText($"Directory: {FolderName}")
+                .Show();
+        }
+
+        private static void OnChanged(object sender, FileSystemEventArgs e)
+        {
+            new ToastContentBuilder()
+                .AddText("File changed")
+                .AddText($"File: {e.Name}")
+                .Show();
+        }
+
+        private static void OnCreated(object sender, FileSystemEventArgs e)
+        {
+            new ToastContentBuilder()
+                .AddText("File created")
+                .AddText($"File: {e.Name}")
+                .Show();
+        }
+
+        private static void OnDeleted(object sender, FileSystemEventArgs e)
+        {
+            new ToastContentBuilder()
+                .AddText("File deleted")
+                .AddText($"File: {e.Name}")
+                .Show();
+        }
+
+        private static void OnRenamed(object sender, RenamedEventArgs e)
+        {
+            new ToastContentBuilder()
+                .AddText("File renamed")
+                .AddText($"Old name: {e.OldName}")
+                .AddText($"New name: {e.Name}")
                 .Show();
         }
     }

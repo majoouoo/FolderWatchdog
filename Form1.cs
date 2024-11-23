@@ -8,6 +8,7 @@ namespace FolderWatchdog
         public Form1()
         {
             InitializeComponent();
+            Watchdog.Initialize();
 
             this.WindowState = FormWindowState.Minimized;
             this.ShowInTaskbar = false;
