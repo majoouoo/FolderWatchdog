@@ -73,11 +73,11 @@ namespace FolderWatchdog
             enabledCheckBox.Checked = enabledToolStripMenuItem.Checked;
             if (enabledToolStripMenuItem.Checked)
             {
-                Debug.WriteLine("Start the watchdog");
+                Watchdog.Start();
             }
             else
             {
-                Debug.WriteLine("Stop the watchdog");
+                Watchdog.Stop();
             }
             Properties.Settings.Default.Save();
         }
@@ -123,6 +123,10 @@ namespace FolderWatchdog
             });
             filtersToToggle.Clear();
 
+            if (enabledCheckBox.Checked && (enabledToolStripMenuItem.Checked == enabledCheckBox.Checked))
+            {
+                Watchdog.Start();
+            }
             enabledToolStripMenuItem.Checked = enabledCheckBox.Checked;
             Properties.Settings.Default.Enabled = enabledToolStripMenuItem.Checked;
             Properties.Settings.Default.WatchFiles = watchFilesCheckBox.Checked;
@@ -144,6 +148,11 @@ namespace FolderWatchdog
             });
 
             filtersToToggle.Clear();
+
+            enabledCheckBox.Checked = Properties.Settings.Default.Enabled;
+            watchFilesCheckBox.Checked = Properties.Settings.Default.WatchFiles;
+            watchSubdirectoriesCheckBox.Checked = Properties.Settings.Default.WatchSubdirectories;
+            directoryTextBox.Text = Properties.Settings.Default.Directory;
 
             this.Hide();
             this.ShowInTaskbar = false;
