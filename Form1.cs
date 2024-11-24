@@ -38,8 +38,7 @@ namespace FolderWatchdog
             if (!allowExit)
             {
                 e.Cancel = true;
-                this.Hide();
-                this.ShowInTaskbar = false;
+                CloseSettings(null, null);
             }
             allowExit = false;
         }
@@ -127,8 +126,11 @@ namespace FolderWatchdog
             this.ShowInTaskbar = false;
         }
 
-        private void CloseSettings(object sender, EventArgs e)
+        private void CloseSettings(object? sender, EventArgs? e)
         {
+            this.Hide();
+            this.ShowInTaskbar = false;
+
             enabledCheckBox.Checked = Properties.Settings.Default.Enabled;
             watchSubdirectoriesCheckBox.Checked = Properties.Settings.Default.WatchSubdirectories;
             directoryTextBox.Text = Properties.Settings.Default.Directory;
@@ -138,9 +140,6 @@ namespace FolderWatchdog
                 string tag = checkBox.Tag.ToString();
                 checkBox.Checked = (bool)Properties.Settings.Default[tag];
             }
-
-            this.Hide();
-            this.ShowInTaskbar = false;
         }
     }
 }
