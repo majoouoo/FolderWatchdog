@@ -14,25 +14,7 @@ namespace FolderWatchdog
         public static FileSystemWatcher watcher = new FileSystemWatcher(Properties.Settings.Default.Directory == "" ? Path.Combine(userProfilePath, "Documents") : Properties.Settings.Default.Directory);
         public static void Initialize()
         {
-            watcher.Changed += OnChanged;
-            watcher.Created += OnCreated;
-            watcher.Deleted += OnDeleted;
-            watcher.Renamed += OnRenamed;
-        }
-
-        public static void UpdateFilters()
-        {
-            NotifyFilters notifyFilters = 0;
-
-            foreach (string filter in Properties.Settings.Default.Filters)
-            {
-                if (Enum.TryParse(filter, true, out NotifyFilters parsedFilter))
-                {
-                    notifyFilters |= parsedFilter;
-                }
-            }
-
-            watcher.NotifyFilter = notifyFilters;
+            UpdateEventSettings();
         }
 
         public static void Start()
@@ -45,6 +27,22 @@ namespace FolderWatchdog
                 .AddText("Watchdog started")
                 .AddText($"Directory: {FolderName}")
                 .Show();
+        }
+
+        public static void UpdateEventSettings()
+        {
+            watcher.Changed -= OnChanged;
+            watcher.Created -= OnCreated;
+            watcher.Deleted -= OnDeleted;
+            watcher.Renamed -= OnRenamed;
+            if (Properties.Settings.Default.OnChanged)
+                watcher.Changed += OnChanged;
+            if (Properties.Settings.Default.OnCreated)
+                watcher.Created += OnCreated;
+            if (Properties.Settings.Default.OnDeleted)
+                watcher.Deleted += OnDeleted;
+            if (Properties.Settings.Default.OnRenamed)
+                watcher.Renamed += OnRenamed;
         }
 
         private static void OnChanged(object sender, FileSystemEventArgs e)

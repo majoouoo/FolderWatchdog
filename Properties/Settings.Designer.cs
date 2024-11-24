@@ -61,14 +61,49 @@ namespace FolderWatchdog.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
-            "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" />")]
-        public global::System.Collections.Specialized.StringCollection Filters {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OnChanged {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["Filters"]));
+                return ((bool)(this["OnChanged"]));
             }
             set {
-                this["Filters"] = value;
+                this["OnChanged"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OnCreated {
+            get {
+                return ((bool)(this["OnCreated"]));
+            }
+            set {
+                this["OnCreated"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OnDeleted {
+            get {
+                return ((bool)(this["OnDeleted"]));
+            }
+            set {
+                this["OnDeleted"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OnRenamed {
+            get {
+                return ((bool)(this["OnRenamed"]));
+            }
+            set {
+                this["OnRenamed"] = value;
             }
         }
     }

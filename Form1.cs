@@ -5,6 +5,7 @@ namespace FolderWatchdog
 {
     public partial class Form1 : Form
     {
+        private CheckBox[] eventCheckBoxes = [];
         public Form1()
         {
             InitializeComponent();
@@ -21,18 +22,13 @@ namespace FolderWatchdog
             directoryTextBox.Text = Properties.Settings.Default.Directory == "" ? Path.Combine(userProfilePath, "Documents") : Properties.Settings.Default.Directory;
             Properties.Settings.Default.Directory = Properties.Settings.Default.Directory == "" ? Path.Combine(userProfilePath, "Documents") : Properties.Settings.Default.Directory;
 
-            void SetFilterCheckBox(CheckBox checkBox)
+            eventCheckBoxes = [onChangedEventCheckBox, onCreatedEventCheckBox, onDeletedEventCheckBox, onRenamedEventCheckBox];
+
+            foreach (CheckBox checkBox in eventCheckBoxes)
             {
-                checkBox.CheckedChanged -= new EventHandler(ToggleFilter);
-                checkBox.Checked = Properties.Settings.Default.Filters.Contains(checkBox.Tag as string);
-                checkBox.CheckedChanged += new EventHandler(ToggleFilter);
+                string tag = checkBox.Tag.ToString();
+                checkBox.Checked = (bool)Properties.Settings.Default[tag];
             }
-
-            CheckBox[] checkBoxes = [ fileNamesFilterCheckBox, directoryNamesFilterCheckBox, attributesFilterCheckBox, sizeFilterCheckBox, writeFilterCheckBox, accessFilterCheckBox, creationFilterCheckBox, securityFilterCheckBox ];
-
-            Array.ForEach(checkBoxes, checkBox => {
-                SetFilterCheckBox(checkBox);
-            });
         }
 
         private bool allowExit = false;
@@ -95,37 +91,13 @@ namespace FolderWatchdog
             }
         }
 
-        private List<CheckBox> filtersToToggle = new List<CheckBox>();
-
         private void ToggleFilter(object sender, EventArgs e)
         {
-            CheckBox checkBox = (CheckBox)sender;
-            if (filtersToToggle.Contains(checkBox))
-            {
-                filtersToToggle.Remove(checkBox);
-            }
-            else
-            {
-                filtersToToggle.Add(checkBox);
-            }
+            watchSubdirectoriesCheckBox.Checked = !watchSubdirectoriesCheckBox.Checked;
         }
 
         private void SaveSettings(object sender, EventArgs e)
         {
-            filtersToToggle.ForEach(checkBox =>
-            {
-                string? filter = checkBox.Tag as string;
-                if (Properties.Settings.Default.Filters.Contains(filter))
-                {
-                    Properties.Settings.Default.Filters.Remove(filter);
-                }
-                else
-                {
-                    Properties.Settings.Default.Filters.Add(filter);
-                }
-            });
-            filtersToToggle.Clear();
-
             Properties.Settings.Default.WatchSubdirectories = watchSubdirectoriesCheckBox.Checked;
 
             string userProfilePath = Environment.ExpandEnvironmentVariables("%userprofile%");
@@ -143,6 +115,13 @@ namespace FolderWatchdog
             enabledToolStripMenuItem.Checked = enabledCheckBox.Checked;
             Properties.Settings.Default.Enabled = enabledToolStripMenuItem.Checked;
 
+            foreach (CheckBox checkBox in eventCheckBoxes)
+            {
+                string tag = checkBox.Tag.ToString();
+                Properties.Settings.Default[tag] = checkBox.Checked;
+            }
+            Watchdog.UpdateEventSettings();
+
             Properties.Settings.Default.Save();
             this.Hide();
             this.ShowInTaskbar = false;
@@ -150,18 +129,15 @@ namespace FolderWatchdog
 
         private void CloseSettings(object sender, EventArgs e)
         {
-            filtersToToggle.ForEach(checkBox =>
-            {
-                checkBox.CheckedChanged -= new EventHandler(ToggleFilter);
-                checkBox.Checked = !checkBox.Checked;
-                checkBox.CheckedChanged += new EventHandler(ToggleFilter);
-            });
-
-            filtersToToggle.Clear();
-
             enabledCheckBox.Checked = Properties.Settings.Default.Enabled;
             watchSubdirectoriesCheckBox.Checked = Properties.Settings.Default.WatchSubdirectories;
             directoryTextBox.Text = Properties.Settings.Default.Directory;
+
+            foreach (CheckBox checkBox in eventCheckBoxes)
+            {
+                string tag = checkBox.Tag.ToString();
+                checkBox.Checked = (bool)Properties.Settings.Default[tag];
+            }
 
             this.Hide();
             this.ShowInTaskbar = false;

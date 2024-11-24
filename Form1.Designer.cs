@@ -45,18 +45,12 @@
             directoryLabel = new Label();
             directoryTextBox = new TextBox();
             browseButton = new Button();
-            filtersGroupBox = new GroupBox();
-            tableLayoutPanel2 = new TableLayoutPanel();
+            eventsGroupBox = new GroupBox();
             flowLayoutPanel2 = new FlowLayoutPanel();
-            fileNamesFilterCheckBox = new CheckBox();
-            directoryNamesFilterCheckBox = new CheckBox();
-            attributesFilterCheckBox = new CheckBox();
-            sizeFilterCheckBox = new CheckBox();
-            flowLayoutPanel3 = new FlowLayoutPanel();
-            writeFilterCheckBox = new CheckBox();
-            accessFilterCheckBox = new CheckBox();
-            creationFilterCheckBox = new CheckBox();
-            securityFilterCheckBox = new CheckBox();
+            onChangedEventCheckBox = new CheckBox();
+            onCreatedEventCheckBox = new CheckBox();
+            onDeletedEventCheckBox = new CheckBox();
+            onRenamedEventCheckBox = new CheckBox();
             flowLayoutPanel1 = new FlowLayoutPanel();
             saveButton = new Button();
             cancelButton = new Button();
@@ -66,10 +60,8 @@
             tableLayoutPanel3.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
             flowLayoutPanel5.SuspendLayout();
-            filtersGroupBox.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
+            eventsGroupBox.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
-            flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -116,7 +108,7 @@
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Controls.Add(settingsGroupBox, 0, 0);
-            tableLayoutPanel1.Controls.Add(filtersGroupBox, 0, 1);
+            tableLayoutPanel1.Controls.Add(eventsGroupBox, 0, 1);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 2);
             tableLayoutPanel1.Location = new Point(12, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -218,149 +210,71 @@
             browseButton.UseVisualStyleBackColor = true;
             browseButton.Click += BrowseDirectories;
             // 
-            // filtersGroupBox
+            // eventsGroupBox
             // 
-            filtersGroupBox.Controls.Add(tableLayoutPanel2);
-            filtersGroupBox.Location = new Point(3, 153);
-            filtersGroupBox.Name = "filtersGroupBox";
-            filtersGroupBox.Size = new Size(554, 147);
-            filtersGroupBox.TabIndex = 1;
-            filtersGroupBox.TabStop = false;
-            filtersGroupBox.Text = "Filters";
-            // 
-            // tableLayoutPanel2
-            // 
-            tableLayoutPanel2.ColumnCount = 2;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Controls.Add(flowLayoutPanel2, 0, 0);
-            tableLayoutPanel2.Controls.Add(flowLayoutPanel3, 1, 0);
-            tableLayoutPanel2.Location = new Point(6, 22);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 1;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Size = new Size(542, 119);
-            tableLayoutPanel2.TabIndex = 0;
+            eventsGroupBox.Controls.Add(flowLayoutPanel2);
+            eventsGroupBox.Location = new Point(3, 153);
+            eventsGroupBox.Name = "eventsGroupBox";
+            eventsGroupBox.Size = new Size(554, 147);
+            eventsGroupBox.TabIndex = 1;
+            eventsGroupBox.TabStop = false;
+            eventsGroupBox.Text = "Events";
             // 
             // flowLayoutPanel2
             // 
-            flowLayoutPanel2.Controls.Add(fileNamesFilterCheckBox);
-            flowLayoutPanel2.Controls.Add(directoryNamesFilterCheckBox);
-            flowLayoutPanel2.Controls.Add(attributesFilterCheckBox);
-            flowLayoutPanel2.Controls.Add(sizeFilterCheckBox);
+            flowLayoutPanel2.Controls.Add(onChangedEventCheckBox);
+            flowLayoutPanel2.Controls.Add(onCreatedEventCheckBox);
+            flowLayoutPanel2.Controls.Add(onDeletedEventCheckBox);
+            flowLayoutPanel2.Controls.Add(onRenamedEventCheckBox);
             flowLayoutPanel2.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel2.Location = new Point(3, 3);
+            flowLayoutPanel2.Location = new Point(9, 22);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(265, 113);
+            flowLayoutPanel2.Size = new Size(536, 119);
             flowLayoutPanel2.TabIndex = 0;
             // 
-            // fileNamesFilterCheckBox
+            // onChangedEventCheckBox
             // 
-            fileNamesFilterCheckBox.AutoSize = true;
-            fileNamesFilterCheckBox.Location = new Point(3, 3);
-            fileNamesFilterCheckBox.Name = "fileNamesFilterCheckBox";
-            fileNamesFilterCheckBox.Size = new Size(82, 19);
-            fileNamesFilterCheckBox.TabIndex = 0;
-            fileNamesFilterCheckBox.Tag = "FileName";
-            fileNamesFilterCheckBox.Text = "File names";
-            fileNamesFilterCheckBox.UseVisualStyleBackColor = true;
-            fileNamesFilterCheckBox.CheckedChanged += ToggleFilter;
+            onChangedEventCheckBox.AutoSize = true;
+            onChangedEventCheckBox.Location = new Point(3, 3);
+            onChangedEventCheckBox.Name = "onChangedEventCheckBox";
+            onChangedEventCheckBox.Size = new Size(72, 19);
+            onChangedEventCheckBox.TabIndex = 0;
+            onChangedEventCheckBox.Tag = "OnChanged";
+            onChangedEventCheckBox.Text = "Changes";
+            onChangedEventCheckBox.UseVisualStyleBackColor = true;
             // 
-            // directoryNamesFilterCheckBox
+            // onCreatedEventCheckBox
             // 
-            directoryNamesFilterCheckBox.AutoSize = true;
-            directoryNamesFilterCheckBox.Location = new Point(3, 28);
-            directoryNamesFilterCheckBox.Name = "directoryNamesFilterCheckBox";
-            directoryNamesFilterCheckBox.Size = new Size(112, 19);
-            directoryNamesFilterCheckBox.TabIndex = 1;
-            directoryNamesFilterCheckBox.Tag = "DirectoryName";
-            directoryNamesFilterCheckBox.Text = "Directory names";
-            directoryNamesFilterCheckBox.UseVisualStyleBackColor = true;
-            directoryNamesFilterCheckBox.CheckedChanged += ToggleFilter;
+            onCreatedEventCheckBox.AutoSize = true;
+            onCreatedEventCheckBox.Location = new Point(3, 28);
+            onCreatedEventCheckBox.Name = "onCreatedEventCheckBox";
+            onCreatedEventCheckBox.Size = new Size(76, 19);
+            onCreatedEventCheckBox.TabIndex = 1;
+            onCreatedEventCheckBox.Tag = "OnCreated";
+            onCreatedEventCheckBox.Text = "Creations";
+            onCreatedEventCheckBox.UseVisualStyleBackColor = true;
             // 
-            // attributesFilterCheckBox
+            // onDeletedEventCheckBox
             // 
-            attributesFilterCheckBox.AutoSize = true;
-            attributesFilterCheckBox.Location = new Point(3, 53);
-            attributesFilterCheckBox.Name = "attributesFilterCheckBox";
-            attributesFilterCheckBox.Size = new Size(78, 19);
-            attributesFilterCheckBox.TabIndex = 2;
-            attributesFilterCheckBox.Tag = "Attributes";
-            attributesFilterCheckBox.Text = "Attributes";
-            attributesFilterCheckBox.UseVisualStyleBackColor = true;
-            attributesFilterCheckBox.CheckedChanged += ToggleFilter;
+            onDeletedEventCheckBox.AutoSize = true;
+            onDeletedEventCheckBox.Location = new Point(3, 53);
+            onDeletedEventCheckBox.Name = "onDeletedEventCheckBox";
+            onDeletedEventCheckBox.Size = new Size(75, 19);
+            onDeletedEventCheckBox.TabIndex = 2;
+            onDeletedEventCheckBox.Tag = "OnDeleted";
+            onDeletedEventCheckBox.Text = "Deletions";
+            onDeletedEventCheckBox.UseVisualStyleBackColor = true;
             // 
-            // sizeFilterCheckBox
+            // onRenamedEventCheckBox
             // 
-            sizeFilterCheckBox.AutoSize = true;
-            sizeFilterCheckBox.Location = new Point(3, 78);
-            sizeFilterCheckBox.Name = "sizeFilterCheckBox";
-            sizeFilterCheckBox.Size = new Size(46, 19);
-            sizeFilterCheckBox.TabIndex = 3;
-            sizeFilterCheckBox.Tag = "Size";
-            sizeFilterCheckBox.Text = "Size";
-            sizeFilterCheckBox.UseVisualStyleBackColor = true;
-            sizeFilterCheckBox.CheckedChanged += ToggleFilter;
-            // 
-            // flowLayoutPanel3
-            // 
-            flowLayoutPanel3.Controls.Add(writeFilterCheckBox);
-            flowLayoutPanel3.Controls.Add(accessFilterCheckBox);
-            flowLayoutPanel3.Controls.Add(creationFilterCheckBox);
-            flowLayoutPanel3.Controls.Add(securityFilterCheckBox);
-            flowLayoutPanel3.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel3.Location = new Point(274, 3);
-            flowLayoutPanel3.Name = "flowLayoutPanel3";
-            flowLayoutPanel3.Size = new Size(265, 113);
-            flowLayoutPanel3.TabIndex = 1;
-            // 
-            // writeFilterCheckBox
-            // 
-            writeFilterCheckBox.AutoSize = true;
-            writeFilterCheckBox.Location = new Point(3, 3);
-            writeFilterCheckBox.Name = "writeFilterCheckBox";
-            writeFilterCheckBox.Size = new Size(54, 19);
-            writeFilterCheckBox.TabIndex = 0;
-            writeFilterCheckBox.Tag = "LastWrite";
-            writeFilterCheckBox.Text = "Write";
-            writeFilterCheckBox.UseVisualStyleBackColor = true;
-            writeFilterCheckBox.CheckedChanged += ToggleFilter;
-            // 
-            // accessFilterCheckBox
-            // 
-            accessFilterCheckBox.AutoSize = true;
-            accessFilterCheckBox.Location = new Point(3, 28);
-            accessFilterCheckBox.Name = "accessFilterCheckBox";
-            accessFilterCheckBox.Size = new Size(62, 19);
-            accessFilterCheckBox.TabIndex = 1;
-            accessFilterCheckBox.Tag = "LastAccess";
-            accessFilterCheckBox.Text = "Access";
-            accessFilterCheckBox.UseVisualStyleBackColor = true;
-            accessFilterCheckBox.CheckedChanged += ToggleFilter;
-            // 
-            // creationFilterCheckBox
-            // 
-            creationFilterCheckBox.AutoSize = true;
-            creationFilterCheckBox.Location = new Point(3, 53);
-            creationFilterCheckBox.Name = "creationFilterCheckBox";
-            creationFilterCheckBox.Size = new Size(71, 19);
-            creationFilterCheckBox.TabIndex = 2;
-            creationFilterCheckBox.Tag = "CreationTime";
-            creationFilterCheckBox.Text = "Creation";
-            creationFilterCheckBox.UseVisualStyleBackColor = true;
-            creationFilterCheckBox.CheckedChanged += ToggleFilter;
-            // 
-            // securityFilterCheckBox
-            // 
-            securityFilterCheckBox.AutoSize = true;
-            securityFilterCheckBox.Location = new Point(3, 78);
-            securityFilterCheckBox.Name = "securityFilterCheckBox";
-            securityFilterCheckBox.Size = new Size(68, 19);
-            securityFilterCheckBox.TabIndex = 3;
-            securityFilterCheckBox.Tag = "Security";
-            securityFilterCheckBox.Text = "Security";
-            securityFilterCheckBox.UseVisualStyleBackColor = true;
-            securityFilterCheckBox.CheckedChanged += ToggleFilter;
+            onRenamedEventCheckBox.AutoSize = true;
+            onRenamedEventCheckBox.Location = new Point(3, 78);
+            onRenamedEventCheckBox.Name = "onRenamedEventCheckBox";
+            onRenamedEventCheckBox.Size = new Size(74, 19);
+            onRenamedEventCheckBox.TabIndex = 3;
+            onRenamedEventCheckBox.Tag = "OnRenamed";
+            onRenamedEventCheckBox.Text = "Renames";
+            onRenamedEventCheckBox.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel1
             // 
@@ -411,12 +325,9 @@
             flowLayoutPanel4.PerformLayout();
             flowLayoutPanel5.ResumeLayout(false);
             flowLayoutPanel5.PerformLayout();
-            filtersGroupBox.ResumeLayout(false);
-            tableLayoutPanel2.ResumeLayout(false);
+            eventsGroupBox.ResumeLayout(false);
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
-            flowLayoutPanel3.ResumeLayout(false);
-            flowLayoutPanel3.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -430,27 +341,21 @@
         private ToolStripMenuItem enabledToolStripMenuItem;
         private TableLayoutPanel tableLayoutPanel1;
         private GroupBox settingsGroupBox;
-        private GroupBox filtersGroupBox;
+        private GroupBox eventsGroupBox;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button saveButton;
         private Button cancelButton;
-        private TableLayoutPanel tableLayoutPanel2;
         private FlowLayoutPanel flowLayoutPanel4;
         private FlowLayoutPanel flowLayoutPanel2;
-        private CheckBox fileNamesFilterCheckBox;
-        private CheckBox directoryNamesFilterCheckBox;
-        private CheckBox attributesFilterCheckBox;
-        private CheckBox sizeFilterCheckBox;
-        private FlowLayoutPanel flowLayoutPanel3;
+        private CheckBox onChangedEventCheckBox;
+        private CheckBox onCreatedEventCheckBox;
+        private CheckBox onDeletedEventCheckBox;
+        private CheckBox onRenamedEventCheckBox;
         private CheckBox enabledCheckBox;
         private CheckBox watchSubdirectoriesCheckBox;
         private Label directoryLabel;
         private TextBox directoryTextBox;
         private Button browseButton;
-        private CheckBox writeFilterCheckBox;
-        private CheckBox accessFilterCheckBox;
-        private CheckBox creationFilterCheckBox;
-        private CheckBox securityFilterCheckBox;
         private TableLayoutPanel tableLayoutPanel3;
         private FlowLayoutPanel flowLayoutPanel5;
     }
