@@ -20,9 +20,6 @@ namespace FolderWatchdog
             form1.WindowState = FormWindowState.Minimized;
             form1.ShowInTaskbar = false;
             Application.Run(form1);
-            Application.Run(new Form1());
-
-            Properties.Settings.Default.Reset();
         }
     }
 }
