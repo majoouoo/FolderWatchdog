@@ -19,6 +19,8 @@ namespace FolderWatchdog
             Form1 form1 = new Form1();
             form1.WindowState = FormWindowState.Minimized;
             form1.ShowInTaskbar = false;
+
+            Watchdog.Initialize(form1);
             Application.Run(form1);
         }
     }

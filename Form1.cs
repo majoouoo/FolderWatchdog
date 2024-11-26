@@ -1,3 +1,4 @@
+using Microsoft.Toolkit.Uwp.Notifications;
 using System.Diagnostics;
 using System.Drawing.Text;
 
@@ -9,7 +10,6 @@ namespace FolderWatchdog
         public Form1()
         {
             InitializeComponent();
-            Watchdog.Initialize();
 
             this.WindowState = FormWindowState.Minimized;
             this.ShowInTaskbar = false;
@@ -47,10 +47,11 @@ namespace FolderWatchdog
         {
             allowExit = true;
             notifyIcon1.Visible = false;
+            ToastNotificationManagerCompat.Uninstall();
             Application.Exit();
         }
 
-        private void ShowMainWindow(object? sender, EventArgs? e)
+        public void ShowMainWindow(object? sender, EventArgs? e)
         {
             this.Show();
             this.WindowState = FormWindowState.Normal;
@@ -69,6 +70,7 @@ namespace FolderWatchdog
         private void ToggleEnabledAndSave(object sender, EventArgs e)
         {
             enabledCheckBox.Checked = enabledToolStripMenuItem.Checked;
+            Properties.Settings.Default.Enabled = enabledToolStripMenuItem.Checked;
             if (enabledToolStripMenuItem.Checked)
             {
                 Watchdog.Start();
@@ -78,6 +80,11 @@ namespace FolderWatchdog
                 Watchdog.watcher.EnableRaisingEvents = false;
             }
             Properties.Settings.Default.Save();
+        }
+
+        public void DisableWatchdog()
+        {
+            enabledToolStripMenuItem.Checked = false;
         }
 
         private void BrowseDirectories(object sender, EventArgs e)

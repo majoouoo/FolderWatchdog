@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Activation;
 
 namespace FolderWatchdog
 {
@@ -12,9 +13,13 @@ namespace FolderWatchdog
     {
         static string userProfilePath = Environment.ExpandEnvironmentVariables("%userprofile%");
         public static FileSystemWatcher watcher = new FileSystemWatcher(Properties.Settings.Default.Directory == "" ? Path.Combine(userProfilePath, "Documents") : Properties.Settings.Default.Directory);
-        public static void Initialize()
+
+        private static Form1? formInstance;
+        public static void Initialize(Form1 form1)
         {
             UpdateEventSettings();
+            ToastNotificationManagerCompat.OnActivated += ToastActivated;
+            formInstance = form1;
         }
 
         public static void Start()
@@ -26,6 +31,12 @@ namespace FolderWatchdog
             new ToastContentBuilder()
                 .AddText("Watchdog started")
                 .AddText($"Directory: {FolderName}")
+                .AddButton(new ToastButton()
+                    .SetContent("Settings")
+                    .AddArgument("action", "showMainWindow"))
+                .AddButton(new ToastButton()
+                    .SetContent("Disable")
+                    .AddArgument("action", "disableWatchdog"))
                 .Show();
         }
 
@@ -50,6 +61,12 @@ namespace FolderWatchdog
             new ToastContentBuilder()
                 .AddText("File changed")
                 .AddText($"File: {e.Name}")
+                .AddButton(new ToastButton()
+                    .SetContent("Settings")
+                    .AddArgument("action", "showMainWindow"))
+                .AddButton(new ToastButton()
+                    .SetContent("Disable")
+                    .AddArgument("action", "disableWatchdog"))
                 .Show();
         }
 
@@ -58,6 +75,12 @@ namespace FolderWatchdog
             new ToastContentBuilder()
                 .AddText("File created")
                 .AddText($"File: {e.Name}")
+                .AddButton(new ToastButton()
+                    .SetContent("Settings")
+                    .AddArgument("action", "showMainWindow"))
+                .AddButton(new ToastButton()
+                    .SetContent("Disable")
+                    .AddArgument("action", "disableWatchdog"))
                 .Show();
         }
 
@@ -66,6 +89,12 @@ namespace FolderWatchdog
             new ToastContentBuilder()
                 .AddText("File deleted")
                 .AddText($"File: {e.Name}")
+                .AddButton(new ToastButton()
+                    .SetContent("Settings")
+                    .AddArgument("action", "showMainWindow"))
+                .AddButton(new ToastButton()
+                    .SetContent("Disable")
+                    .AddArgument("action", "disableWatchdog"))
                 .Show();
         }
 
@@ -75,7 +104,40 @@ namespace FolderWatchdog
                 .AddText("File renamed")
                 .AddText($"Old name: {e.OldName}")
                 .AddText($"New name: {e.Name}")
+                .AddButton(new ToastButton()
+                    .SetContent("Settings")
+                    .AddArgument("action", "showMainWindow"))
+                .AddButton(new ToastButton()
+                    .SetContent("Disable")
+                    .AddArgument("action", "disableWatchdog"))
                 .Show();
+        }
+
+        private static void ToastActivated(ToastNotificationActivatedEventArgsCompat args)
+        {
+            ToastArguments arguments = ToastArguments.Parse(args.Argument);
+
+            if (arguments.Contains("action"))
+            {
+                if (arguments["action"] == "showMainWindow" || arguments["action"] == null)
+                {
+                    formInstance.Invoke(delegate
+                    {
+                        formInstance.ShowMainWindow(null, null);
+                    });
+                }
+                else if (arguments["action"] == "disableWatchdog")
+                {
+                    formInstance.Invoke(new Action(formInstance.DisableWatchdog));
+                }
+            }
+            else
+            {
+                formInstance.Invoke(delegate
+                {
+                    formInstance.ShowMainWindow(null, null);
+                });
+            }
         }
     }
 }
