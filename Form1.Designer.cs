@@ -45,12 +45,17 @@
             directoryLabel = new Label();
             directoryTextBox = new TextBox();
             browseButton = new Button();
-            eventsGroupBox = new GroupBox();
+            filtersGroupBox = new GroupBox();
+            tableLayoutPanel2 = new TableLayoutPanel();
             flowLayoutPanel2 = new FlowLayoutPanel();
             onChangedEventCheckBox = new CheckBox();
             onCreatedEventCheckBox = new CheckBox();
             onDeletedEventCheckBox = new CheckBox();
             onRenamedEventCheckBox = new CheckBox();
+            flowLayoutPanel3 = new FlowLayoutPanel();
+            filterLabel = new Label();
+            filterTextBox = new TextBox();
+            filterInfoLabel = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
             saveButton = new Button();
             cancelButton = new Button();
@@ -60,8 +65,10 @@
             tableLayoutPanel3.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
             flowLayoutPanel5.SuspendLayout();
-            eventsGroupBox.SuspendLayout();
+            filtersGroupBox.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
+            flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -108,7 +115,7 @@
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Controls.Add(settingsGroupBox, 0, 0);
-            tableLayoutPanel1.Controls.Add(eventsGroupBox, 0, 1);
+            tableLayoutPanel1.Controls.Add(filtersGroupBox, 0, 1);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 2);
             tableLayoutPanel1.Location = new Point(12, 12);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -210,15 +217,29 @@
             browseButton.UseVisualStyleBackColor = true;
             browseButton.Click += BrowseDirectories;
             // 
-            // eventsGroupBox
+            // filtersGroupBox
             // 
-            eventsGroupBox.Controls.Add(flowLayoutPanel2);
-            eventsGroupBox.Location = new Point(3, 153);
-            eventsGroupBox.Name = "eventsGroupBox";
-            eventsGroupBox.Size = new Size(554, 147);
-            eventsGroupBox.TabIndex = 1;
-            eventsGroupBox.TabStop = false;
-            eventsGroupBox.Text = "Events";
+            filtersGroupBox.Controls.Add(tableLayoutPanel2);
+            filtersGroupBox.Location = new Point(3, 153);
+            filtersGroupBox.Name = "filtersGroupBox";
+            filtersGroupBox.Size = new Size(554, 147);
+            filtersGroupBox.TabIndex = 1;
+            filtersGroupBox.TabStop = false;
+            filtersGroupBox.Text = "Filters";
+            // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 2;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 29.15129F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70.84871F));
+            tableLayoutPanel2.Controls.Add(flowLayoutPanel2, 0, 0);
+            tableLayoutPanel2.Controls.Add(flowLayoutPanel3, 1, 0);
+            tableLayoutPanel2.Location = new Point(6, 22);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.Size = new Size(542, 119);
+            tableLayoutPanel2.TabIndex = 1;
             // 
             // flowLayoutPanel2
             // 
@@ -227,9 +248,9 @@
             flowLayoutPanel2.Controls.Add(onDeletedEventCheckBox);
             flowLayoutPanel2.Controls.Add(onRenamedEventCheckBox);
             flowLayoutPanel2.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel2.Location = new Point(9, 22);
+            flowLayoutPanel2.Location = new Point(3, 3);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(536, 119);
+            flowLayoutPanel2.Size = new Size(152, 113);
             flowLayoutPanel2.TabIndex = 0;
             // 
             // onChangedEventCheckBox
@@ -275,6 +296,42 @@
             onRenamedEventCheckBox.Tag = "OnRenamed";
             onRenamedEventCheckBox.Text = "Renames";
             onRenamedEventCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel3
+            // 
+            flowLayoutPanel3.Controls.Add(filterLabel);
+            flowLayoutPanel3.Controls.Add(filterTextBox);
+            flowLayoutPanel3.Controls.Add(filterInfoLabel);
+            flowLayoutPanel3.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel3.Location = new Point(161, 3);
+            flowLayoutPanel3.Name = "flowLayoutPanel3";
+            flowLayoutPanel3.Size = new Size(378, 113);
+            flowLayoutPanel3.TabIndex = 1;
+            // 
+            // filterLabel
+            // 
+            filterLabel.AutoSize = true;
+            filterLabel.Location = new Point(3, 0);
+            filterLabel.Name = "filterLabel";
+            filterLabel.Size = new Size(165, 15);
+            filterLabel.TabIndex = 0;
+            filterLabel.Text = "File name and extension filter:";
+            // 
+            // filterTextBox
+            // 
+            filterTextBox.Location = new Point(3, 18);
+            filterTextBox.Name = "filterTextBox";
+            filterTextBox.Size = new Size(375, 23);
+            filterTextBox.TabIndex = 1;
+            // 
+            // filterInfoLabel
+            // 
+            filterInfoLabel.AutoSize = true;
+            filterInfoLabel.Location = new Point(3, 44);
+            filterInfoLabel.Name = "filterInfoLabel";
+            filterInfoLabel.Size = new Size(364, 45);
+            filterInfoLabel.TabIndex = 2;
+            filterInfoLabel.Text = "Filter files to watch using * (any characters) and ? (single character), e.g., *.txt for text files.\r\nLeave empty for all files.\r\n";
             // 
             // flowLayoutPanel1
             // 
@@ -325,9 +382,12 @@
             flowLayoutPanel4.PerformLayout();
             flowLayoutPanel5.ResumeLayout(false);
             flowLayoutPanel5.PerformLayout();
-            eventsGroupBox.ResumeLayout(false);
+            filtersGroupBox.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
+            flowLayoutPanel3.ResumeLayout(false);
+            flowLayoutPanel3.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -341,16 +401,11 @@
         private ToolStripMenuItem enabledToolStripMenuItem;
         private TableLayoutPanel tableLayoutPanel1;
         private GroupBox settingsGroupBox;
-        private GroupBox eventsGroupBox;
+        private GroupBox filtersGroupBox;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button saveButton;
         private Button cancelButton;
         private FlowLayoutPanel flowLayoutPanel4;
-        private FlowLayoutPanel flowLayoutPanel2;
-        private CheckBox onChangedEventCheckBox;
-        private CheckBox onCreatedEventCheckBox;
-        private CheckBox onDeletedEventCheckBox;
-        private CheckBox onRenamedEventCheckBox;
         private CheckBox enabledCheckBox;
         private CheckBox watchSubdirectoriesCheckBox;
         private Label directoryLabel;
@@ -358,5 +413,15 @@
         private Button browseButton;
         private TableLayoutPanel tableLayoutPanel3;
         private FlowLayoutPanel flowLayoutPanel5;
+        private TableLayoutPanel tableLayoutPanel2;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private CheckBox onChangedEventCheckBox;
+        private CheckBox onCreatedEventCheckBox;
+        private CheckBox onDeletedEventCheckBox;
+        private CheckBox onRenamedEventCheckBox;
+        private FlowLayoutPanel flowLayoutPanel3;
+        private Label filterLabel;
+        private TextBox filterTextBox;
+        private Label filterInfoLabel;
     }
 }

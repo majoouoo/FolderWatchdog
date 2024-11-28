@@ -22,6 +22,8 @@ namespace FolderWatchdog
             directoryTextBox.Text = Properties.Settings.Default.Directory == "" ? Path.Combine(userProfilePath, "Documents") : Properties.Settings.Default.Directory;
             Properties.Settings.Default.Directory = Properties.Settings.Default.Directory == "" ? Path.Combine(userProfilePath, "Documents") : Properties.Settings.Default.Directory;
 
+            filterTextBox.Text = Properties.Settings.Default.Filter;
+
             eventCheckBoxes = [onChangedEventCheckBox, onCreatedEventCheckBox, onDeletedEventCheckBox, onRenamedEventCheckBox];
 
             foreach (CheckBox checkBox in eventCheckBoxes)
@@ -97,11 +99,6 @@ namespace FolderWatchdog
             }
         }
 
-        private void ToggleFilter(object sender, EventArgs e)
-        {
-            watchSubdirectoriesCheckBox.Checked = !watchSubdirectoriesCheckBox.Checked;
-        }
-
         private void SaveSettings(object sender, EventArgs e)
         {
             Properties.Settings.Default.WatchSubdirectories = watchSubdirectoriesCheckBox.Checked;
@@ -110,8 +107,11 @@ namespace FolderWatchdog
             Properties.Settings.Default.Directory = directoryTextBox.Text == "" ? Properties.Settings.Default.Directory : directoryTextBox.Text;
             directoryTextBox.Text = Properties.Settings.Default.Directory;
 
+            Properties.Settings.Default.Filter = filterTextBox.Text;
+
             Watchdog.watcher.Path = Properties.Settings.Default.Directory;
             Watchdog.watcher.IncludeSubdirectories = Properties.Settings.Default.WatchSubdirectories;
+            Watchdog.watcher.Filter = Properties.Settings.Default.Filter;
 
             if (enabledCheckBox.Checked && (enabledToolStripMenuItem.Checked == enabledCheckBox.Checked))
             {
@@ -141,6 +141,8 @@ namespace FolderWatchdog
             enabledCheckBox.Checked = Properties.Settings.Default.Enabled;
             watchSubdirectoriesCheckBox.Checked = Properties.Settings.Default.WatchSubdirectories;
             directoryTextBox.Text = Properties.Settings.Default.Directory;
+
+            filterTextBox.Text = Properties.Settings.Default.Filter;
 
             foreach (CheckBox checkBox in eventCheckBoxes)
             {

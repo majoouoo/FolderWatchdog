@@ -20,6 +20,9 @@ namespace FolderWatchdog
             UpdateEventSettings();
             ToastNotificationManagerCompat.OnActivated += ToastActivated;
             formInstance = form1;
+
+            Watchdog.watcher.IncludeSubdirectories = Properties.Settings.Default.WatchSubdirectories;
+            Watchdog.watcher.Filter = Properties.Settings.Default.Filter;
         }
 
         public static void Start()
